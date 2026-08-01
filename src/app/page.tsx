@@ -19,7 +19,7 @@ export default function Home() {
     <>
       <CoverScreen open={open} onOpen={() => setOpen(true)} />
       <PetalsFall active={open} count={9} />
-      <MusicPlayer src="/music/bermuara .mp3" autoPlayTrigger={open} />
+      <MusicPlayer src="/music/bermuara.mp3" autoPlayTrigger={open} />
 
       <main
         className={`relative min-h-screen w-full transition-opacity duration-700 ${
