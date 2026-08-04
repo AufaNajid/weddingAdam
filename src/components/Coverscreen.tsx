@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import FloralOrnament from "./FloralOrnament";
 import { invitation } from "../data/invitation";
+import FloralCluster from "@/src/components/FloralCluster";
+import Dove from "./Dove"
 
 type Props = {
   guestName?: string;
@@ -17,37 +19,47 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
         <div className="fixed inset-0 z-50 overflow-hidden">
           {/* Left panel */}
           <motion.div
-            className="absolute inset-y-0 left-0 w-1/2 bg-paper flex items-center justify-start"
+            className="absolute inset-y-0 left-0 w-1/2 flex items-center justify-start"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--paper) 0%, var(--paper-soft) 100%)",
+            }}
             initial={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
           >
-            <FloralOrnament
+            <div className="absolute inset-y-6 left-6 w-px bg-gold-pale/60" />
+            <FloralCluster
               variant="corner"
-              className="absolute bottom-0 left-0 w-40 sm:w-56 opacity-90"
+              className="absolute -bottom-4 -left-4 w-48 sm:w-64 opacity-95"
             />
             <FloralOrnament
               variant="corner"
               flip
-              className="absolute top-0 left-0 w-32 sm:w-44 opacity-70 rotate-180"
+              className="absolute top-0 left-0 w-28 sm:w-36 opacity-60 rotate-180"
             />
           </motion.div>
 
           {/* Right panel */}
           <motion.div
-            className="absolute inset-y-0 right-0 w-1/2 bg-paper flex items-center justify-end"
+            className="absolute inset-y-0 right-0 w-1/2 flex items-center justify-end"
+            style={{
+              background:
+                "linear-gradient(225deg, var(--paper) 0%, var(--paper-soft) 100%)",
+            }}
             initial={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
           >
-            <FloralOrnament
+            <div className="absolute inset-y-6 right-6 w-px bg-gold-pale/60" />
+            <FloralCluster
               variant="corner"
               flip
-              className="absolute bottom-0 right-0 w-40 sm:w-56 opacity-90"
+              className="absolute -bottom-4 -right-4 w-48 sm:w-64 opacity-95"
             />
             <FloralOrnament
               variant="corner"
-              className="absolute top-0 right-0 w-32 sm:w-44 opacity-70 rotate-180"
+              className="absolute top-0 right-0 w-28 sm:w-36 opacity-60 rotate-180"
             />
           </motion.div>
 
@@ -57,6 +69,18 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.6 }}
           >
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: [0, -4, 0] }}
+              transition={{
+                opacity: { delay: 0.2, duration: 0.8 },
+                y: { delay: 1, duration: 3.2, repeat: Infinity, ease: "easeInOut" },
+              }}
+              className="mb-2"
+            >
+              <Dove className="w-14 h-auto mx-auto" />
+            </motion.div>
+
             <motion.p
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -70,7 +94,7 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.9 }}
-              className="font-[family-name:var(--font-script)] text-5xl sm:text-6xl text-sage-deep leading-tight"
+              className="font-[family-name:var(--font-script)] text-5xl sm:text-6xl text-gold-deep leading-tight"
             >
               {invitation.coupleShort}
             </motion.h1>
@@ -82,7 +106,7 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
               className="mt-6 divider-flourish"
             >
               <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
-                14 . 11 . 2026
+                {invitation.dateDisplay}
               </span>
             </motion.div>
 
@@ -105,7 +129,7 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
               transition={{ delay: 1.3, duration: 0.8 }}
               onClick={onOpen}
               whileTap={{ scale: 0.96 }}
-              className="mt-10 group inline-flex items-center gap-3 px-8 py-3 border border-sage/60 rounded-full text-sm tracking-wide-xl uppercase text-sage-deep hover:bg-sage hover:text-white transition-colors"
+              className="mt-10 group inline-flex items-center gap-3 px-8 py-3 border border-gold/60 rounded-full text-sm tracking-wide-xl uppercase text-gold-deep hover:bg-gold hover:text-white transition-colors"
             >
               <motion.span
                 animate={{ scale: [1, 1.08, 1] }}

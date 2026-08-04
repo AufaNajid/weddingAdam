@@ -9,7 +9,7 @@ export default function RSVPForm() {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState<Attendance>("Hadir");
   const [guests, setGuests] = useState(1);
-  const [message, setMessage] = useState("");
+  const [mesgold, setMesgold] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,7 +55,7 @@ export default function RSVPForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Nama lengkap Anda"
-          className="w-full bg-transparent border-b border-silver/70 py-2 text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-sage transition-colors"
+          className="w-full bg-transparent border-b border-silver/70 py-2 text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-gold transition-colors"
         />
       </div>
 
@@ -71,8 +71,8 @@ export default function RSVPForm() {
               onClick={() => setAttendance(opt)}
               className={`px-4 py-1.5 rounded-full text-sm border transition-colors ${
                 attendance === opt
-                  ? "bg-sage text-white border-sage"
-                  : "border-silver/70 text-ink-soft hover:border-sage"
+                  ? "bg-gold text-white border-gold"
+                  : "border-silver/70 text-ink-soft hover:border-gold"
               }`}
             >
               {opt}
@@ -92,7 +92,7 @@ export default function RSVPForm() {
             max={5}
             value={guests}
             onChange={(e) => setGuests(Number(e.target.value))}
-            className="w-24 bg-transparent border-b border-silver/70 py-2 text-ink focus:outline-none focus:border-sage transition-colors"
+            className="w-24 bg-transparent border-b border-silver/70 py-2 text-ink focus:outline-none focus:border-gold transition-colors"
           />
         </div>
       )}
@@ -102,11 +102,11 @@ export default function RSVPForm() {
           Ucapan &amp; Doa
         </label>
         <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={mesgold}
+          onChange={(e) => setMesgold(e.target.value)}
           rows={3}
           placeholder="Tulis ucapan dan doa terbaik Anda..."
-          className="w-full bg-transparent border-b border-silver/70 py-2 text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-sage transition-colors resize-none"
+          className="w-full bg-transparent border-b border-silver/70 py-2 text-ink placeholder:text-ink-soft/50 focus:outline-none focus:border-gold transition-colors resize-none"
         />
       </div>
 
@@ -125,7 +125,7 @@ export default function RSVPForm() {
 
       <button
         type="submit"
-        className="w-full py-3 mt-2 bg-sage-deep hover:bg-sage text-white text-sm tracking-wide-xl uppercase transition-colors rounded-sm"
+        className="w-full py-3 mt-2 bg-gold-deep hover:bg-gold text-white text-sm tracking-wide-xl uppercase transition-colors rounded-sm"
       >
         Kirim Konfirmasi
       </button>

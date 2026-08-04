@@ -10,6 +10,7 @@ import CountdownTimer from "../components/CountdownTimer";
 import EventCard from "../components/EventCard";
 import RSVPForm from "../components/RSVPForm";
 import PhotoGallery from "../components/PhotoGallery";
+import FloralCluster from "@/src/components/FloralCluster";
 import { invitation } from "../data/invitation";
 
 export default function Home() {
@@ -19,7 +20,7 @@ export default function Home() {
     <>
       <CoverScreen open={open} onOpen={() => setOpen(true)} />
       <PetalsFall active={open} count={9} />
-      <MusicPlayer src="/music/bermuara.mp3" autoPlayTrigger={open} />
+      <MusicPlayer src="/music/wedding-song.mp3" autoPlayTrigger={open} />
 
       <main
         className={`relative min-h-screen w-full transition-opacity duration-700 ${
@@ -28,21 +29,30 @@ export default function Home() {
       >
         {/* HERO / GREETING */}
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden">
+          <FloralCluster
+            variant="corner"
+            className="absolute -bottom-4 -left-4 w-52 sm:w-72 opacity-95"
+          />
+          <FloralCluster
+            variant="corner"
+            flip
+            className="absolute -bottom-4 -right-4 w-52 sm:w-72 opacity-95"
+          />
           <FloralOrnament
             variant="corner"
-            className="absolute top-0 left-0 w-40 sm:w-56 opacity-70"
+            className="absolute top-0 left-0 w-32 sm:w-44 opacity-60"
           />
           <FloralOrnament
             variant="corner"
             flip
-            className="absolute bottom-0 right-0 w-40 sm:w-56 opacity-70 rotate-180"
+            className="absolute top-0 right-0 w-32 sm:w-44 opacity-60 rotate-90"
           />
 
           <Reveal>
             <p className="text-[0.7rem] tracking-wide-xl uppercase text-ink-soft mb-6">
               We Are Getting Married
             </p>
-            <h1 className="font-[family-name:var(--font-script)] text-5xl sm:text-7xl text-sage-deep leading-tight px-4">
+            <h1 className="font-[family-name:var(--font-script)] text-5xl sm:text-7xl text-gold-deep leading-tight px-4">
               {invitation.coupleShort}
             </h1>
             <p className="mt-8 max-w-sm mx-auto text-sm sm:text-base leading-relaxed text-ink-soft">
@@ -63,23 +73,12 @@ export default function Home() {
                 Mempelai
               </span>
             </div>
+            <FloralCluster variant="band" className="w-full max-w-xs mx-auto opacity-90" />
           </Reveal>
 
           <div className="grid sm:grid-cols-2 gap-14 mt-12">
             <Reveal delay={0.1}>
-              <div className="w-24 h-24 mx-auto rounded-full border border-sage-pale flex items-center justify-center mb-6">
-                <FloralOrnament variant="sprig" className="w-8" />
-              </div>
-              <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-                {invitation.bride.name}
-              </h2>
-              <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
-                {invitation.bride.parents}
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.25}>
-              <div className="w-24 h-24 mx-auto rounded-full border border-sage-pale flex items-center justify-center mb-6">
+              <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
                 <FloralOrnament variant="sprig" className="w-8" />
               </div>
               <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
@@ -87,6 +86,18 @@ export default function Home() {
               </h2>
               <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
                 {invitation.groom.parents}
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.25}>
+              <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
+                <FloralOrnament variant="sprig" className="w-8" />
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
+                {invitation.bride.name}
+              </h2>
+              <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
+                {invitation.bride.parents}
               </p>
             </Reveal>
           </div>
@@ -126,6 +137,7 @@ export default function Home() {
         {/* EVENTS */}
         <section className="relative py-24 px-6 max-w-4xl mx-auto">
           <Reveal className="text-center mb-14">
+            <FloralCluster variant="band" className="w-full max-w-sm mx-auto opacity-90 mb-2" />
             <div className="divider-flourish mb-4">
               <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
                 Acara
@@ -168,14 +180,14 @@ export default function Home() {
 
         {/* CLOSING */}
         <section className="relative py-24 px-6 text-center overflow-hidden">
-          <FloralOrnament
+          <FloralCluster
             variant="corner"
-            className="absolute top-0 left-0 w-32 sm:w-48 opacity-60"
+            className="absolute -bottom-6 -left-6 w-56 sm:w-72 opacity-95"
           />
-          <FloralOrnament
+          <FloralCluster
             variant="corner"
             flip
-            className="absolute bottom-0 right-0 w-32 sm:w-48 opacity-60 rotate-180"
+            className="absolute -bottom-6 -right-6 w-56 sm:w-72 opacity-95"
           />
           <Reveal className="max-w-md mx-auto">
             <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-4">
@@ -184,12 +196,12 @@ export default function Home() {
             <p className="text-sm text-ink-soft leading-relaxed mb-10">
               {invitation.closing.body}
             </p>
-            <p className="font-[family-name:var(--font-script)] text-4xl text-sage-deep">
+            <p className="font-[family-name:var(--font-script)] text-4xl text-gold-deep">
               {invitation.coupleShort}
             </p>
           </Reveal>
           <p className="mt-16 text-[0.65rem] tracking-wide-xl uppercase text-ink-soft/60">
-            White Floral Invitation
+            Adam &amp; Salma Wedding Invitation
           </p>
         </section>
       </main>

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Aurelia & Rasyid — Wedding Invitation",
-  description: "White Floral wedding invitation — Aurelia & Rasyid",
+  title: "Adam & Salma — Wedding Invitation",
+  description: "White Floral wedding invitation — Adam & Salma",
 };
 
 export default function RootLayout({

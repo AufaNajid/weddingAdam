@@ -1,5 +1,6 @@
 export const invitation = {
   coupleShort: "Adam & Salma",
+  dateDisplay: "29 . 11 . 2026",
   groom: {
     name: "Adam Januar Aldiandie, S.I.Kom.",
     parents: "Putra dari Bapak H. Mu'allif & Ibu Hj. Adri Trisan",
