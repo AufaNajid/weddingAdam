@@ -2,77 +2,30 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Props = {
-  src: string;
-  autoPlayTrigger: boolean;
-};
-
-export default function MusicPlayer({ src, autoPlayTrigger }: Props) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+export default function MusicPlayer({ src, autoPlayTrigger }: { src: string; autoPlayTrigger: boolean }) {
+  const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (autoPlayTrigger && audioRef.current) {
-      audioRef.current
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
+    if (autoPlayTrigger) {
+      const audio = audioRef.current;
+      if (audio) { audio.volume = 0.45; void audio.play().catch(() => { /* The manual button stays available if autoplay is blocked. */ }); }
     }
   }, [autoPlayTrigger]);
 
-  function toggle() {
+  async function toggle() {
     const audio = audioRef.current;
     if (!audio) return;
-    if (playing) {
-      audio.pause();
-      setPlaying(false);
-    } else {
-      audio
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
-    }
+    setError(false);
+    if (!audio.paused) { audio.pause(); return; }
+    try { audio.volume = 0.45; await audio.play(); }
+    catch { setError(true); }
   }
 
-  return (
-    <>
-      <audio ref={audioRef} src={src} loop preload="auto" />
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={playing ? "Jeda musik" : "Putar musik"}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-paper/90 border border-gold/50 shadow-md backdrop-blur flex items-center justify-center hover:border-gold transition-colors"
-      >
-        <span
-          className="flex items-center justify-center w-8 h-8 rounded-full border border-gold-pale"
-          style={{
-            animation: playing ? "spin 6s linear infinite" : "none",
-          }}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="w-4 h-4 text-gold-deep"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            {playing ? (
-              <path d="M8 5h3v14H8zM13 5h3v14h-3z" />
-            ) : (
-              <path d="M8 5l11 7-11 7z" />
-            )}
-          </svg>
-        </span>
-      </button>
-      <style jsx global>{`
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
-    </>
-  );
+  return <>
+    <audio ref={audioRef} src={src} loop preload="none" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => { setPlaying(false); setError(true); }} />
+    {error && <p role="status" className="music-error">Musik belum dapat diputar. Ketuk tombol untuk mencoba lagi.</p>}
+    <button type="button" className="music-control" data-playing={playing} onClick={toggle} aria-label={playing ? "Jeda musik" : "Putar musik"} aria-pressed={playing}><span className="music-bars" aria-hidden="true"><i /><i /><i /><i /></span><span>{playing ? "MUSIK ON" : "MUSIK OFF"}</span></button>
+  </>;
 }

@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Adam & Salma · Wedding invitation
 
-## Getting Started
+A responsive Next.js 16 invitation based on the supplied
+`wedding-invitation-white-floral (7).zip`: cream paper, antique gold, olive
+accents, Parisienne script, and the original watercolor flowers.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production checks and preview:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm test
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Node.js 20.9 or later is required by this Next.js version. Fonts are bundled
+locally; builds do not download fonts. Copyright notices are in
+`src/app/fonts/OFL.txt`.
 
-## Learn More
+## Content and imagery
 
-To learn more about Next.js, take a look at the following resources:
+- Wedding names, dates, addresses, story, and gallery: `src/data/invitation.ts`.
+- Theme and responsive layout: `src/app/globals.css`.
+- Homepage motion: `src/components/HeroArtwork.tsx`. It uses the exact supplied
+  `public/artwork/adam.png` and `salma.png`. No AI-generated portrait replacements
+  are included. CSS adds floating paper layers, a ribbon, envelope, lighting, and
+  pointer-driven perspective. Reduced-motion preferences are respected.
+- All seven watercolor assets match the supplied ZIP byte-for-byte.
+- Original photographs stay in `public/gallery/`. Focal points are mapped by
+  filename in `PhotoGallery.tsx`; photo 2 is positioned to show both people.
+  The keyboard-accessible lightbox displays the complete image.
+- Music starts only through a guest's interaction and can be paused.
+- Update `public/adam-salma-wedding.ics` when changing the reception date/time.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Connect RSVP and guestbook
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Use an active Supabase project.
+2. Run `supabase/schema.sql` in its SQL editor. It preserves existing entries,
+   adds the optional guest-count column, replaces the original template's public
+   policies, and restricts public reading to names and messages—not attendance.
+3. Copy `.env.example` to `.env.local`, then set the project's URL and public
+   anon/publishable key. Never use a service-role key in a NEXT_PUBLIC variable.
+4. Restart the development server; rebuild after changing production variables.
 
-## Deploy on Vercel
+The current configured endpoint failed DNS resolution (ENOTFOUND) during
+verification on 4 October 2026. Production RSVP remains unverified until that
+project URL is corrected or the project restored. No migration was applied to
+the remote database. The form reports connection errors without clearing
+entered values or pretending a response was saved.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The public submission endpoint follows the template's no-login model. For an
+internet-facing launch, consider provider-side anti-spam/rate limiting.
+Do not collect private information in public wishes.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Isolated RSVP testing
+
+`scripts/guestbook-preview.mjs` is a local-only, in-memory test service; it never
+contacts Supabase or writes guest data to disk.
+
+Run it in one terminal:
+
+```bash
+node scripts/guestbook-preview.mjs
+```
+
+Run Next in a second PowerShell terminal, using temporary process variables:
+
+```powershell
+$env:NEXT_PUBLIC_SUPABASE_URL = 'http://127.0.0.1:4318'
+$env:NEXT_PUBLIC_SUPABASE_ANON_KEY = 'local-preview-key'
+npm run dev -- --hostname 127.0.0.1 --port 3001
+```
+
+Use http://127.0.0.1:3001. The name `Preview Error` simulates a failed
+submission; other names succeed. Stop both processes and close that terminal
+after testing. Never deploy the preview service or its environment values.
+
+## Verification
+
+- `npm test` checks the original character SHA-256 hashes and hero references.
+- Check mobile at 320px and 390px, plus desktop: no horizontal overflow,
+  complete faces in the hero, readable form controls, and unclipped flowers.
+- Gallery: open photo 2, navigate with arrows, close with Escape, and confirm
+  keyboard focus returns to its thumbnail.
+- RSVP: required fields, attendance choices, guest-count bounds, successful
+  save/guestbook refresh, failed save with values preserved.
+- Online RSVP requires the Supabase connection described above.

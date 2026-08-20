@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import CoverScreen from "../components/Coverscreen";
-import FloralOrnament from "../components/FloralOrnament";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { MotionConfig } from "framer-motion";
+import HeroArtwork from "../components/HeroArtwork";
+import FrontPage from "../components/FrontPage";
 import FloralPhoto from "../components/FloralPhoto";
-import PetalsFall from "../components/PetalsFall";
 import MusicPlayer from "../components/MusicPlayer";
 import Reveal from "../components/Reveal";
 import CountdownTimer from "../components/CountdownTimer";
@@ -13,259 +14,146 @@ import RSVPForm from "../components/RSVPForm";
 import GuestbookWall from "../components/GuestbookWall";
 import PhotoGallery from "../components/PhotoGallery";
 import OurStory from "../components/OurStory";
+import { ArrowIcon, HeartIcon, LeafIcon } from "../components/Icons";
 import { invitation } from "../data/invitation";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
+  const [stage, setStage] = useState<"closed" | "opening" | "open">("closed");
   const [guestbookRefresh, setGuestbookRefresh] = useState(0);
+  const heroTitle = useRef<HTMLHeadingElement>(null);
+  const entered = stage === "open";
+
+  useEffect(() => {
+    if (entered) {
+      heroTitle.current?.focus({ preventScroll: true });
+      return;
+    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [entered]);
+
+  function openInvitation() {
+    if (stage !== "closed") return;
+    window.scrollTo({ top: 0, behavior: "instant" });
+    window.history.replaceState(window.history.state, "", "#home");
+    setStage("opening");
+  }
 
   return (
-    <>
-      <CoverScreen open={open} onOpen={() => setOpen(true)} />
-      <PetalsFall active={open} count={9} />
-      <MusicPlayer src="/music/wedding-song.mp3" autoPlayTrigger={open} />
+    <MotionConfig reducedMotion="user">
+      {stage !== "open" && <FrontPage opening={stage === "opening"} onOpen={openInvitation} onEntered={() => setStage("open")} />}
+      <div id="invitation-content" className="invitation-content" data-stage={stage} inert={!entered} aria-hidden={!entered}>
+      <a className="skip-link" href="#mempelai">Langsung ke undangan</a>
+      <header className="site-header">
+        <a className="monogram" href="#home" aria-label="Adam dan Salma, beranda">A<span>&</span>S</a>
+        <nav aria-label="Navigasi undangan">
+          <a href="#kisah">Kisah kami</a>
+          <a href="#galeri">Galeri</a>
+          <a href="#acara">Acara</a>
+        </nav>
+        <a className="header-rsvp" href="#rsvp">RSVP <ArrowIcon /></a>
+      </header>
 
-      <main
-        className={`relative min-h-screen w-full transition-opacity duration-700 ${
-          open ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        {/* HERO / GREETING */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden">
-          <FloralPhoto
-            variant="bouquet-1"
-            className="absolute -bottom-6 -left-6 w-40 sm:w-56 opacity-95 drop-shadow-sm"
-          />
-          <FloralPhoto
-            variant="bouquet-2"
-            flip
-            className="absolute -bottom-6 -right-6 w-40 sm:w-56 opacity-95 drop-shadow-sm"
-          />
-          <FloralPhoto
-            variant="sunflower-1"
-            className="absolute -top-4 -left-6 w-28 sm:w-36 opacity-90 -rotate-12"
-          />
-          <FloralPhoto
-            variant="sunflower-1"
-            flip
-            className="absolute -top-4 -right-6 w-28 sm:w-36 opacity-90 rotate-12"
-          />
-          <FloralPhoto
-            variant="sprig-1"
-            className="absolute top-1/3 left-2 w-10 sm:w-14 opacity-70 hidden sm:block"
-          />
-          <FloralPhoto
-            variant="sprig-1"
-            flip
-            className="absolute top-1/3 right-2 w-10 sm:w-14 opacity-70 hidden sm:block"
-          />
-
-          <Reveal>
-            <p className="text-[0.7rem] tracking-wide-xl uppercase text-ink-soft mb-6">
-              We Are Getting Married
-            </p>
-            <h1 className="font-[family-name:var(--font-script)] text-5xl sm:text-7xl text-gold-deep leading-tight px-4">
-              {invitation.coupleShort}
-            </h1>
-            <p className="mt-8 max-w-sm mx-auto text-sm sm:text-base leading-relaxed text-ink-soft">
-              {invitation.headerCopy}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.2} className="mt-12">
-            <CountdownTimer target={invitation.date} />
-          </Reveal>
+      <main id="home">
+        <section className="hero section-shell" aria-labelledby="hero-title">
+          <div className="hero-copy">
+            <p className="eyebrow"><span className="tiny-line" /> THE WEDDING OF</p>
+            <h1 id="hero-title" ref={heroTitle} tabIndex={-1}>Adam <span className="hero-amp">&</span><br />{" "}Salma</h1>
+            <p className="handwritten hero-note">A little story, a lifetime of us.</p>
+            <p className="hero-description">Dengan penuh cinta, kami mengundang Anda<br className="desktop-break" /> untuk menjadi bagian dari hari bahagia kami.</p>
+            <a href="#mempelai" className="button button-primary">
+              <span>Kenali mempelai</span><ArrowIcon />
+            </a>
+            <div className="hero-location"><span className="status-dot" /> 29 NOVEMBER 2026 <span className="location-divider">/</span> KUDUS</div>
+          </div>
+          <HeroArtwork />
+          <a className="scroll-cue" href="#mempelai"><span>SCROLL TO OUR STORY</span><ArrowIcon direction="down" /></a>
         </section>
 
-        {/* COUPLE */}
-        <section className="relative py-24 px-6 max-w-3xl mx-auto text-center">
-          <Reveal>
-            <div className="divider-flourish mb-4">
-              <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
-                Mempelai
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-6 opacity-90">
-              <FloralPhoto variant="bouquet-2" className="w-14 sm:w-16 rotate-[100deg]" />
-              <FloralPhoto variant="mixed-1" className="w-10 sm:w-12 opacity-80" />
-              <FloralPhoto variant="bouquet-2" flip className="w-14 sm:w-16 -rotate-[100deg]" />
-            </div>
+        <section className="countdown-band" aria-label="Hitung mundur pernikahan">
+          <div className="countdown-intro"><HeartIcon /><p>Menuju hari bahagia<span>We can hardly wait.</span></p></div>
+          <CountdownTimer target={invitation.date} />
+          <a className="text-link calendar-link" href="/adam-salma-wedding.ics" download>Simpan tanggal <span aria-hidden="true">↗</span></a>
+        </section>
+
+        <section id="mempelai" className="section-shell couple-section section-space" aria-labelledby="couple-title">
+          <Reveal className="section-heading centered">
+            <div className="floral-divider" aria-hidden="true"><FloralPhoto variant="bouquet-2" /><span>✧</span><FloralPhoto variant="bouquet-2" flip /></div>
+            <p className="eyebrow">DUA HATI, SATU TUJUAN</p>
+            <h2 id="couple-title">Together is a beautiful place.</h2>
+            <p>Dengan memohon rahmat dan rida Allah SWT,<br />kami bermaksud menyelenggarakan pernikahan kami.</p>
           </Reveal>
-
-          <div className="grid sm:grid-cols-2 gap-14 mt-12">
-            <Reveal delay={0.1}>
-              <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
-                <FloralOrnament variant="sprig" className="w-8" />
-              </div>
-              <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-                {invitation.bride.name}
-              </h2>
-              <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
-                {invitation.bride.parents}
-              </p>
+          <div className="couple-layout">
+            <Reveal className="couple-person groom-person">
+              <p className="eyebrow">THE GROOM</p><h3>Adam</h3>
+              <p className="full-name">{invitation.groom.name}</p><p className="parents">{invitation.groom.parents}</p>
             </Reveal>
-
-            <Reveal delay={0.25}>
-              <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
-                <FloralOrnament variant="sprig" className="w-8" />
-              </div>
-              <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-                {invitation.groom.name}
-              </h2>
-              <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
-                {invitation.groom.parents}
-              </p>
+            <Reveal className="couple-photo" delay={0.1}>
+              <Image src="/gallery/photo7.jpeg" alt="Adam dan Salma tersenyum bersama" fill sizes="(max-width: 700px) 70vw, 320px" />
+              <span className="photo-note handwritten">meant to be.</span>
+            </Reveal>
+            <Reveal className="couple-person bride-person" delay={0.2}>
+              <p className="eyebrow">THE BRIDE</p><h3>Salma</h3>
+              <p className="full-name">{invitation.bride.name}</p><p className="parents">{invitation.bride.parents}</p>
             </Reveal>
           </div>
         </section>
 
-        {/* OUR STORY */}
-        <section className="relative py-24 px-6 bg-paper-soft/60 overflow-hidden">
-          <FloralPhoto
-            variant="bouquet-3"
-            className="absolute -top-6 -left-6 w-32 sm:w-44 opacity-80"
-          />
-          <FloralPhoto
-            variant="sprig-1"
-            flip
-            className="absolute -bottom-4 -right-2 w-24 sm:w-32 opacity-75"
-          />
-          <OurStory
-            paragraphs={invitation.story.paragraphs}
-            blessing={invitation.story.blessing}
-            tagline={invitation.story.tagline}
-          />
-        </section>
-
-        {/* QUOTE */}
-        <section className="relative py-24 px-6 overflow-hidden">
-          <FloralPhoto
-            variant="mixed-1"
-            className="absolute top-4 left-2 sm:left-10 w-16 sm:w-24 opacity-70 hidden sm:block"
-          />
-          <FloralPhoto
-            variant="mixed-1"
-            flip
-            className="absolute bottom-4 right-2 sm:right-10 w-16 sm:w-24 opacity-70 hidden sm:block"
-          />
-          <Reveal className="max-w-lg mx-auto text-center relative">
-            <FloralOrnament variant="sprig" className="w-8 mx-auto mb-6 opacity-80" />
-            <p className="font-[family-name:var(--font-display)] italic text-2xl sm:text-3xl text-ink leading-relaxed">
-              &ldquo;{invitation.quote}&rdquo;
-            </p>
-          </Reveal>
-        </section>
-
-        {/* GALLERY */}
-        <section className="relative py-24 px-6 max-w-3xl mx-auto overflow-hidden">
-          <FloralPhoto
-            variant="sprig-1"
-            className="absolute -top-2 -right-4 w-20 sm:w-28 opacity-60 hidden sm:block"
-          />
-          <Reveal className="text-center mb-12">
-            <div className="divider-flourish mb-4">
-              <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
-                Galeri
-              </span>
-            </div>
-            <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-              Pre-Wedding
-            </h2>
-            <p className="text-sm text-ink-soft">
-              Ketuk foto untuk memperbesar
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <PhotoGallery photos={invitation.gallery} />
-          </Reveal>
-        </section>
-
-        {/* EVENTS */}
-        <section className="relative py-24 px-6 max-w-4xl mx-auto">
-          <Reveal className="text-center mb-14">
-            <div className="flex items-center justify-center gap-8 opacity-90 mb-2">
-              <FloralPhoto variant="bouquet-1" className="w-16 sm:w-20 rotate-[95deg]" />
-              <FloralPhoto variant="bouquet-1" flip className="w-16 sm:w-20 -rotate-[95deg]" />
-            </div>
-            <div className="divider-flourish mb-4">
-              <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
-                Acara
-              </span>
-            </div>
-            <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink">
-              Save the Date
-            </h2>
-          </Reveal>
-
-          <div className="flex flex-col sm:flex-row gap-8">
-            {invitation.events.map((ev, i) => (
-              <Reveal key={ev.label} delay={i * 0.15} className="flex-1">
-                <EventCard {...ev} />
-              </Reveal>
-            ))}
+        <section id="kisah" className="story-section section-space">
+          <FloralPhoto variant="sprig-1" className="story-flower" />
+          <div className="section-shell story-layout">
+            <Reveal className="story-photo-wrap">
+              <div className="story-photo"><Image src="/gallery/photo3.jpeg" alt="Adam dan Salma duduk bersama di depan rumah klasik" fill sizes="(max-width: 700px) 90vw, 480px" style={{ objectPosition: "26% center" }} /></div>
+              <span className="story-photo-caption handwritten">It was always you.</span>
+              <span className="paper-tape" aria-hidden="true" />
+            </Reveal>
+            <OurStory {...invitation.story} />
           </div>
         </section>
 
-        {/* RSVP */}
-        <section className="relative py-24 px-6 bg-paper-soft/60 overflow-hidden">
-          <FloralPhoto
-            variant="bouquet-3"
-            flip
-            className="absolute -top-8 -left-8 w-32 sm:w-44 opacity-70"
-          />
-          <FloralPhoto
-            variant="sunflower-1"
-            className="absolute -bottom-6 -right-6 w-28 sm:w-36 opacity-75"
-          />
-          <Reveal className="text-center mb-12">
-            <div className="divider-flourish mb-4">
-              <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
-                RSVP
-              </span>
-            </div>
-            <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-3">
-              Konfirmasi Kehadiran
-            </h2>
-            <p className="text-sm text-ink-soft max-w-sm mx-auto">
-              Mohon konfirmasi kehadiran Anda sebelum 7 November 2026.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <RSVPForm onSubmitted={() => setGuestbookRefresh((n) => n + 1)} />
-          </Reveal>
-
-          <GuestbookWall refreshKey={guestbookRefresh} />
+        <section className="quote-section section-shell" aria-label="Kutipan cinta">
+          <FloralPhoto variant="mixed-1" className="quote-flower" />
+          <p>“{invitation.quote}”</p>
+          <FloralPhoto variant="mixed-1" className="quote-flower" flip />
         </section>
 
-        {/* CLOSING */}
-        <section className="relative py-24 px-6 text-center overflow-hidden">
-          <FloralPhoto
-            variant="bouquet-2"
-            className="absolute -bottom-8 -left-8 w-44 sm:w-60 opacity-95 drop-shadow-sm"
-          />
-          <FloralPhoto
-            variant="bouquet-1"
-            flip
-            className="absolute -bottom-8 -right-8 w-44 sm:w-60 opacity-95 drop-shadow-sm"
-          />
-          <Reveal className="max-w-md mx-auto">
-            <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-4">
-              {invitation.closing.title}
-            </h2>
-            <p className="text-sm text-ink-soft leading-relaxed mb-10">
-              {invitation.closing.body}
-            </p>
-            <p className="font-[family-name:var(--font-script)] text-4xl text-gold-deep">
-              {invitation.coupleShort}
-            </p>
+        <section id="galeri" className="section-shell section-space gallery-section" aria-labelledby="gallery-title">
+          <Reveal className="gallery-heading">
+            <div><p className="eyebrow">LITTLE MOMENTS, BIG FEELINGS</p><h2 id="gallery-title">Our kind of <em>forever.</em></h2></div>
+            <p>Potongan cerita yang ingin kami simpan.<br />Ketuk foto untuk melihat lebih dekat.</p>
           </Reveal>
-          <p className="mt-16 text-[0.65rem] tracking-wide-xl uppercase text-ink-soft/60">
-            Adam &amp; Salma Wedding Invitation
-          </p>
+          <PhotoGallery photos={invitation.gallery} />
+          <p className="gallery-footer handwritten">and so, our adventure begins…</p>
         </section>
+
+        <section id="acara" className="events-section section-space" aria-labelledby="events-title">
+          <div className="section-shell">
+            <Reveal className="section-heading centered"><div className="floral-divider" aria-hidden="true"><FloralPhoto variant="bouquet-1" /><span>✧</span><FloralPhoto variant="bouquet-1" flip /></div><p className="eyebrow">YOU’RE INVITED</p><h2 id="events-title">A day to remember.</h2><p>Kehadiran dan doa restu Anda adalah hadiah terindah bagi kami.</p></Reveal>
+            <div className="events-grid">{invitation.events.map((event, i) => <Reveal key={event.label} delay={i * 0.1}><EventCard {...event} index={i} /></Reveal>)}</div>
+            <p className="events-footnote"><LeafIcon /> Dua perayaan, satu kisah cinta.</p>
+          </div>
+        </section>
+
+        <section id="rsvp" className="section-shell section-space rsvp-section" aria-labelledby="rsvp-title">
+          <div className="rsvp-layout">
+            <Reveal className="rsvp-copy"><p className="eyebrow">SAVE A SEAT, LEAVE SOME LOVE</p><h2 id="rsvp-title">Will you<br /> be <em>there?</em></h2><p>Hari kami akan lebih berarti dengan kehadiran Anda. Mohon konfirmasi sebelum <strong>7 November 2026.</strong></p><div className="rsvp-note"><HeartIcon /><span className="handwritten">We saved you a little place<br />in our favorite day.</span></div></Reveal>
+            <Reveal><RSVPForm onSubmitted={() => setGuestbookRefresh((n) => n + 1)} /></Reveal>
+          </div>
+          <GuestbookWall key={guestbookRefresh} />
+        </section>
+
+        <footer className="closing-section">
+          <FloralPhoto variant="bouquet-2" className="closing-flower closing-flower-left" />
+          <FloralPhoto variant="bouquet-1" className="closing-flower closing-flower-right" flip />
+          <LeafIcon className="section-leaf" /><p className="eyebrow">WITH LOVE & GRATITUDE</p>
+          <h2>{invitation.closing.title}</h2><p className="closing-copy">{invitation.closing.body}</p>
+          <p className="closing-names handwritten">Adam & Salma</p>
+          <div className="footer-bottom"><a className="monogram" href="#home" aria-label="Kembali ke atas">A<span>&</span>S</a><span>29.11.2026 · KUDUS, JAWA TENGAH</span><a href="#home">Kembali ke atas ↑</a></div>
+        </footer>
       </main>
-    </>
+      <MusicPlayer src="/music/wedding-song.mp3" autoPlayTrigger={stage !== "closed"} />
+      </div>
+    </MotionConfig>
   );
 }

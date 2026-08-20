@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useMemo } from "react";
 
 type Props = {
@@ -41,19 +41,20 @@ function Petal({ delay, left, duration, size }: { delay: number; left: number; d
 }
 
 export default function PetalsFall({ count = 10, active = true }: Props) {
+  const reducedMotion = useReducedMotion();
   const petals = useMemo(
     () =>
       Array.from({ length: count }).map((_, i) => ({
         id: i,
-        left: Math.random() * 100,
-        delay: Math.random() * 6,
-        duration: 9 + Math.random() * 6,
-        size: 10 + Math.random() * 10,
+        left: (i * 37 + 11) % 100,
+        delay: (i * 1.7) % 6,
+        duration: 9 + ((i * 7) % 6),
+        size: 10 + ((i * 3) % 10),
       })),
     [count]
   );
 
-  if (!active) return null;
+  if (!active || reducedMotion) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 overflow-hidden z-40" aria-hidden="true">

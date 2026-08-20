@@ -1,13 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { supabase, isSupabaseConfigured, GUESTBOOK_TABLE } from "../lib/supabase";
-import FloralOrnament from "./FloralOrnament";
+import { type FormEvent, useState } from "react";
+import { supabase, type Attendance, GUESTBOOK_TABLE } from "../lib/supabase";
+import { ArrowIcon, HeartIcon } from "./Icons";
 
-type Attendance = "Hadir" | "Tidak Hadir" | "Masih Ragu";
-
-const ATTENDANCE_OPTIONS: Attendance[] = ["Hadir", "Tidak Hadir", "Masih Ragu"];
+const OPTIONS: Attendance[] = ["Hadir", "Tidak Hadir", "Masih Ragu"];
 
 export default function RSVPForm({ onSubmitted }: { onSubmitted?: () => void }) {
   const [name, setName] = useState("");
@@ -18,177 +15,39 @@ export default function RSVPForm({ onSubmitted }: { onSubmitted?: () => void }) 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!name.trim()) {
-      setError("Mohon isi nama Anda terlebih dahulu.");
-      return;
-    }
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (submitting) return;
     setError("");
+    if (name.trim().length < 2) { setError("Mohon isi nama lengkap Anda (minimal 2 karakter)."); return; }
+    if (!supabase) { setError("Konfirmasi online belum tersedia. Silakan hubungi mempelai untuk mengonfirmasi kehadiran."); return; }
     setSubmitting(true);
-
-    if (supabase) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
       const { error: insertError } = await supabase.from(GUESTBOOK_TABLE).insert({
-        name: name.trim(),
-        attendance,
-        guests: attendance === "Hadir" ? guests : null,
-        message: message.trim() || null,
-      });
-      if (insertError) {
-        setError("Gagal mengirim, coba lagi sebentar lagi.");
-        setSubmitting(false);
-        return;
-      }
+        name: name.trim(), attendance, guests: attendance === "Hadir" ? guests : null, message: message.trim() || null,
+      }).abortSignal(controller.signal);
+      if (insertError) throw insertError;
+      setSubmitted(true);
+      onSubmitted?.();
+    } catch {
+      setError("Konfirmasi belum terkirim. Periksa koneksi Anda dan coba lagi. Isian Anda tetap tersimpan di formulir ini.");
+    } finally {
+      clearTimeout(timeout);
+      setSubmitting(false);
     }
-
-    setSubmitting(false);
-    setSubmitted(true);
-    onSubmitted?.();
   }
 
-  if (submitted) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center py-12 px-8 border border-gold-pale/60 rounded-2xl bg-paper-soft/50 shadow-sm max-w-md mx-auto"
-      >
-        <FloralOrnament variant="sprig" className="w-8 mx-auto mb-4 opacity-80" />
-        <p className="font-[family-name:var(--font-display)] text-2xl text-ink mb-2">
-          Terima kasih, {name.split(" ")[0]}
-        </p>
-        <p className="text-sm text-ink-soft leading-relaxed">
-          {attendance === "Hadir"
-            ? "Konfirmasi kehadiran Anda telah kami terima. Kami tunggu kehadirannya."
-            : attendance === "Tidak Hadir"
-            ? "Terima kasih atas konfirmasinya. Doa restu Anda sangat berarti bagi kami."
-            : "Terima kasih telah mengabari kami. Kami tunggu kabar selanjutnya."}
-        </p>
-      </motion.div>
-    );
-  }
+  if (submitted) return <div className="rsvp-form form-success" role="status"><HeartIcon /><h3>Terima kasih, {name.trim().split(" ")[0]}!</h3><p>{attendance === "Hadir" ? "Konfirmasi Anda telah tersimpan. Sampai bertemu di hari bahagia kami!" : attendance === "Tidak Hadir" ? "Terima kasih atas konfirmasinya. Doa restu Anda sangat berarti bagi kami." : "Terima kasih telah mengabari kami. Silakan hubungi mempelai saat sudah dapat memastikan kehadiran."}</p></div>;
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-md mx-auto rounded-2xl border border-gold-pale/50 bg-paper/70 shadow-sm px-6 sm:px-9 py-9 space-y-7"
-    >
-      <div>
-        <label className="block text-[0.68rem] tracking-wide-xl uppercase text-ink-soft mb-2.5">
-          Nama
-        </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Nama lengkap Anda"
-          className="w-full bg-paper-soft/60 border border-gold-pale/40 rounded-xl px-4 py-3 text-ink placeholder:text-ink-soft/45 focus:outline-none focus:border-gold focus:bg-paper transition-colors"
-        />
-      </div>
-
-      <div>
-        <label className="block text-[0.68rem] tracking-wide-xl uppercase text-ink-soft mb-2.5">
-          Konfirmasi Kehadiran
-        </label>
-        <div className="relative flex bg-paper-soft/60 border border-gold-pale/40 rounded-xl p-1">
-          {ATTENDANCE_OPTIONS.map((opt) => (
-            <button
-              type="button"
-              key={opt}
-              onClick={() => setAttendance(opt)}
-              className="relative flex-1 px-2 py-2 text-xs sm:text-sm rounded-lg z-10 transition-colors"
-            >
-              {attendance === opt && (
-                <motion.span
-                  layoutId="attendance-pill"
-                  className="absolute inset-0 bg-gold-deep rounded-lg -z-10"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                />
-              )}
-              <span className={attendance === opt ? "text-white" : "text-ink-soft"}>
-                {opt}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <AnimatePresence initial={false}>
-        {attendance === "Hadir" && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <label className="block text-[0.68rem] tracking-wide-xl uppercase text-ink-soft mb-2.5">
-              Jumlah Tamu
-            </label>
-            <div className="inline-flex items-center gap-4 bg-paper-soft/60 border border-gold-pale/40 rounded-xl px-3 py-2">
-              <button
-                type="button"
-                onClick={() => setGuests((g) => Math.max(1, g - 1))}
-                className="w-7 h-7 rounded-full border border-gold-pale/60 text-gold-deep hover:bg-gold hover:text-white hover:border-gold transition-colors flex items-center justify-center text-sm"
-                aria-label="Kurangi tamu"
-              >
-                −
-              </button>
-              <span className="w-4 text-center text-ink tabular-nums">{guests}</span>
-              <button
-                type="button"
-                onClick={() => setGuests((g) => Math.min(5, g + 1))}
-                className="w-7 h-7 rounded-full border border-gold-pale/60 text-gold-deep hover:bg-gold hover:text-white hover:border-gold transition-colors flex items-center justify-center text-sm"
-                aria-label="Tambah tamu"
-              >
-                +
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div>
-        <label className="block text-[0.68rem] tracking-wide-xl uppercase text-ink-soft mb-2.5">
-          Ucapan &amp; Doa
-        </label>
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows={3}
-          placeholder="Tulis ucapan dan doa terbaik Anda..."
-          className="w-full bg-paper-soft/60 border border-gold-pale/40 rounded-xl px-4 py-3 text-ink placeholder:text-ink-soft/45 focus:outline-none focus:border-gold focus:bg-paper transition-colors resize-none"
-        />
-      </div>
-
-      <AnimatePresence>
-        {error && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-sm text-rose-700"
-          >
-            {error}
-          </motion.p>
-        )}
-      </AnimatePresence>
-
-      {!isSupabaseConfigured && (
-        <p className="text-xs text-ink-soft/70">
-          Catatan: buku tamu publik belum aktif, ucapan hanya tersimpan di perangkat ini.
-        </p>
-      )}
-
-      <motion.button
-        type="submit"
-        disabled={submitting}
-        whileHover={{ scale: submitting ? 1 : 1.015 }}
-        whileTap={{ scale: submitting ? 1 : 0.985 }}
-        className="w-full py-3.5 mt-1 bg-gold-deep hover:bg-gold disabled:opacity-60 text-white text-sm tracking-wide-xl uppercase transition-colors rounded-xl shadow-sm"
-      >
-        {submitting ? "Mengirim..." : "Kirim Konfirmasi"}
-      </motion.button>
-    </form>
-  );
+  return <form className="rsvp-form" onSubmit={handleSubmit} aria-label="Konfirmasi kehadiran" aria-busy={submitting}>
+    <div className="form-field"><label className="form-label" htmlFor="guest-name">Nama lengkap <span aria-hidden="true">*</span></label><input id="guest-name" name="name" className="form-input" autoComplete="name" placeholder="Nama lengkap Anda" value={name} onChange={(e) => setName(e.target.value)} required minLength={2} maxLength={100} disabled={submitting} /></div>
+    <fieldset className="form-field" disabled={submitting}><legend className="form-label">Apakah Anda akan hadir?</legend><div className="attendance-options">{OPTIONS.map((option) => <label key={option} className="attendance-option"><input className="sr-only" type="radio" name="attendance" value={option} checked={attendance === option} onChange={() => setAttendance(option)} />{option}</label>)}</div></fieldset>
+    {attendance === "Hadir" && <div className="form-field"><span id="guest-count-label" className="form-label">Jumlah tamu</span><div className="guest-stepper" role="group" aria-labelledby="guest-count-label"><button type="button" aria-label="Kurangi tamu" disabled={submitting || guests <= 1} onClick={() => setGuests((n) => Math.max(1, n - 1))}>−</button><output aria-live="polite" aria-label="Jumlah tamu">{guests}</output><button type="button" aria-label="Tambah tamu" disabled={submitting || guests >= 5} onClick={() => setGuests((n) => Math.min(5, n + 1))}>+</button></div></div>}
+    <div className="form-field"><label htmlFor="guest-message" className="form-label">Ucapan & doa <span className="normal-case tracking-normal">(opsional)</span></label><textarea id="guest-message" name="message" className="form-input" placeholder="Sepatah cinta untuk perjalanan kami…" value={message} onChange={(e) => setMessage(e.target.value)} rows={3} maxLength={1000} disabled={submitting} aria-describedby="message-privacy" /></div>
+    <p id="message-privacy" className="form-privacy">Nama dan ucapan Anda akan ditampilkan di buku tamu.</p>
+    {error && <p role="alert" className="form-error">{error}</p>}
+    <button type="submit" className="button button-primary" disabled={submitting}>{submitting ? "Mengirim…" : "Kirim konfirmasi"}<ArrowIcon /></button>
+  </form>;
 }

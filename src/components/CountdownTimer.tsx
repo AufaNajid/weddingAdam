@@ -1,46 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-function getTimeLeft(target: string) {
-  const diff = new Date(target).getTime() - Date.now();
-  const clamp = Math.max(diff, 0);
-  return {
-    days: Math.floor(clamp / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((clamp / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((clamp / (1000 * 60)) % 60),
-    seconds: Math.floor((clamp / 1000) % 60),
-  };
+function subscribe(onChange: () => void) {
+  const timer = setInterval(onChange, 1000);
+  return () => clearInterval(timer);
 }
+const getSnapshot = () => Math.floor(Date.now() / 1000);
+const getServerSnapshot = () => null;
 
 export default function CountdownTimer({ target }: { target: string }) {
-  const [time, setTime] = useState<ReturnType<typeof getTimeLeft> | null>(null);
-
-  useEffect(() => {
-    setTime(getTimeLeft(target));
-    const id = setInterval(() => setTime(getTimeLeft(target)), 1000);
-    return () => clearInterval(id);
-  }, [target]);
-
+  const now = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const seconds = now === null ? null : Math.max(0, Math.floor(new Date(target).getTime() / 1000) - now);
   const units = [
-    { label: "Hari", value: time?.days },
-    { label: "Jam", value: time?.hours },
-    { label: "Menit", value: time?.minutes },
-    { label: "Detik", value: time?.seconds },
+    { label: "Hari", value: seconds === null ? null : Math.floor(seconds / 86400) },
+    { label: "Jam", value: seconds === null ? null : Math.floor(seconds / 3600) % 24 },
+    { label: "Menit", value: seconds === null ? null : Math.floor(seconds / 60) % 60 },
+    { label: "Detik", value: seconds === null ? null : seconds % 60 },
   ];
-
-  return (
-    <div className="flex items-center justify-center gap-4 sm:gap-8">
-      {units.map((u) => (
-        <div key={u.label} className="flex flex-col items-center">
-          <span className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl text-ink tabular-nums">
-            {u.value !== undefined ? String(u.value).padStart(2, "0") : "--"}
-          </span>
-          <span className="mt-1 text-[0.65rem] tracking-wide-xl uppercase text-ink-soft">
-            {u.label}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
+  return <div className="countdown" role="timer" aria-label="Waktu menuju pernikahan">
+    {units.map(({ label, value }) => <div key={label} className="countdown-unit"><span className="countdown-value">{value === null ? "—" : String(value).padStart(2, "0")}</span><span className="countdown-label">{label}</span></div>)}
+  </div>;
 }

@@ -14,7 +14,7 @@ export default function FloralOrnament({
   variant = "corner",
   flip = false,
 }: Props) {
-  const transform = flip ? "scale(-1,1) translate(-220,0)" : undefined;
+  const transform = flip ? `translate(${variant === "sprig" ? 60 : 220},0) scale(-1,1)` : undefined;
 
   if (variant === "branch") {
     return (
@@ -81,14 +81,13 @@ export default function FloralOrnament({
           />
           <circle cx="30" cy="10" r="5.5" fill="var(--gold)" opacity="0.85" />
           <circle cx="30" cy="10" r="5.5" stroke="var(--gold-deep)" strokeWidth="0.6" />
-          {[28, 24, 27, 46, 33, 58, 28, 70].length && null}
           {[
             [28, 24, -1],
             [32, 34, 1],
             [27, 46, -1],
             [33, 58, 1],
             [28, 70, -1],
-          ].map(([x, y, dir], i) => (
+          ].map(([, y, dir], i) => (
             <path
               key={i}
               d={`M30 ${y}c${dir * 10} -2 ${dir * 14} 4 ${dir * 16} 10`}
