@@ -31,24 +31,24 @@ export default function Home() {
         }`}
       >
         {/* HERO / GREETING */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden">
+        <section className="relative min-h-[90svh] flex flex-col items-center justify-center px-6 text-center overflow-hidden">
           <FloralPhoto
             variant="bouquet-1"
-            className="absolute -bottom-6 -left-6 w-40 sm:w-56 opacity-95 drop-shadow-sm"
+            className="absolute bottom-2 left-2 w-32 sm:-bottom-6 sm:-left-6 sm:w-56 opacity-95 drop-shadow-sm"
           />
           <FloralPhoto
             variant="bouquet-2"
             flip
-            className="absolute -bottom-6 -right-6 w-40 sm:w-56 opacity-95 drop-shadow-sm"
+            className="absolute bottom-2 right-2 w-32 sm:-bottom-6 sm:-right-6 sm:w-56 opacity-95 drop-shadow-sm"
           />
           <FloralPhoto
             variant="sunflower-1"
-            className="absolute -top-4 -left-6 w-28 sm:w-36 opacity-90 -rotate-12"
+            className="absolute top-2 left-2 w-24 sm:-top-4 sm:-left-6 sm:w-36 opacity-90 -rotate-12"
           />
           <FloralPhoto
             variant="sunflower-1"
             flip
-            className="absolute -top-4 -right-6 w-28 sm:w-36 opacity-90 rotate-12"
+            className="absolute top-2 right-2 w-24 sm:-top-4 sm:-right-6 sm:w-36 opacity-90 rotate-12"
           />
           <FloralPhoto
             variant="sprig-1"
@@ -98,10 +98,10 @@ export default function Home() {
                 <FloralOrnament variant="sprig" className="w-8" />
               </div>
               <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-                {invitation.bride.name}
+                {invitation.groom.name}
               </h2>
               <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
-                {invitation.bride.parents}
+                {invitation.groom.parents}
               </p>
             </Reveal>
 
@@ -110,10 +110,10 @@ export default function Home() {
                 <FloralOrnament variant="sprig" className="w-8" />
               </div>
               <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-                {invitation.groom.name}
+                {invitation.bride.name}
               </h2>
               <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
-                {invitation.groom.parents}
+                {invitation.bride.parents}
               </p>
             </Reveal>
           </div>

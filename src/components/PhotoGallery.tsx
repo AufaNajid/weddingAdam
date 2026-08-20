@@ -8,6 +8,12 @@ type Props = {
   photos: string[];
 };
 
+// The second photo is a wide, close-up composition. Its focal point sits left
+// of center, so a centered portrait crop hides the bride in the gallery tile.
+const PHOTO_POSITIONS: Record<number, string> = {
+  1: "25% center",
+};
+
 function PlaceholderTile() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-paper-soft border border-dashed border-silver/70">
@@ -53,6 +59,7 @@ export default function PhotoGallery({ photos }: Props) {
                 alt={`Foto pre-wedding ${i + 1}`}
                 onError={() => markFailed(i)}
                 className="w-full h-full object-cover"
+                style={{ objectPosition: PHOTO_POSITIONS[i] }}
                 loading="lazy"
               />
             ) : (

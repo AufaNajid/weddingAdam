@@ -125,7 +125,7 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
                 animate={{ scale: [1, 1.08, 1] }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
               >
-                Buka Undangan
+                Open Invitation
               </motion.span>
             </motion.button>
           </motion.div>
