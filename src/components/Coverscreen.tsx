@@ -1,10 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import FloralOrnament from "./FloralOrnament";
+import FloralPhoto from "./FloralPhoto";
+import Dove from "./Dove";
 import { invitation } from "../data/invitation";
-import FloralCluster from "@/src/components/FloralCluster";
-import Dove from "./Dove"
 
 type Props = {
   guestName?: string;
@@ -29,14 +28,9 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
             transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
           >
             <div className="absolute inset-y-6 left-6 w-px bg-gold-pale/60" />
-            <FloralCluster
-              variant="corner"
-              className="absolute -bottom-4 -left-4 w-48 sm:w-64 opacity-95"
-            />
-            <FloralOrnament
-              variant="corner"
-              flip
-              className="absolute top-0 left-0 w-28 sm:w-36 opacity-60 rotate-180"
+            <FloralPhoto
+              variant="bouquet-1"
+              className="absolute -bottom-6 -left-6 w-36 sm:w-52 opacity-95 drop-shadow-sm"
             />
           </motion.div>
 
@@ -52,14 +46,10 @@ export default function CoverScreen({ guestName, open, onOpen }: Props) {
             transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
           >
             <div className="absolute inset-y-6 right-6 w-px bg-gold-pale/60" />
-            <FloralCluster
-              variant="corner"
+            <FloralPhoto
+              variant="bouquet-2"
               flip
-              className="absolute -bottom-4 -right-4 w-48 sm:w-64 opacity-95"
-            />
-            <FloralOrnament
-              variant="corner"
-              className="absolute top-0 right-0 w-28 sm:w-36 opacity-60 rotate-180"
+              className="absolute -bottom-6 -right-6 w-36 sm:w-52 opacity-95 drop-shadow-sm"
             />
           </motion.div>
 

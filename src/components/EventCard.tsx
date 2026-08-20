@@ -15,7 +15,7 @@ export default function EventCard({ label, date, time, place, address }: Props) 
         variant="sprig"
         className="absolute -top-6 left-1/2 -translate-x-1/2 w-8 opacity-80"
       />
-      <h3 className="font-[family-name:var(--font-display)] text-2xl text-sage-deep mb-4">
+      <h3 className="font-[family-name:var(--font-display)] text-2xl text-gold-deep mb-4">
         {label}
       </h3>
       <p className="text-sm text-ink mb-1">{date}</p>

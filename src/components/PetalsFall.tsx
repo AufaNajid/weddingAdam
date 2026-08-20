@@ -1,6 +1,5 @@
 "use client";
 
-
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
@@ -16,7 +15,7 @@ function Petal({ delay, left, duration, size }: { delay: number; left: number; d
       width={size}
       height={size}
       className="absolute top-0"
-      style={{ left: `${left}%`, color: "var(--sage)" }}
+      style={{ left: `${left}%`, color: "var(--gold)" }}
       initial={{ y: -40, x: 0, opacity: 0, rotate: 0 }}
       animate={{
         y: "110vh",

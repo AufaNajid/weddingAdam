@@ -41,17 +41,17 @@ export default function MusicPlayer({ src, autoPlayTrigger }: Props) {
         type="button"
         onClick={toggle}
         aria-label={playing ? "Jeda musik" : "Putar musik"}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-paper/90 border border-sage/50 shadow-md backdrop-blur flex items-center justify-center hover:border-sage transition-colors"
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-paper/90 border border-gold/50 shadow-md backdrop-blur flex items-center justify-center hover:border-gold transition-colors"
       >
         <span
-          className="flex items-center justify-center w-8 h-8 rounded-full border border-sage-pale"
+          className="flex items-center justify-center w-8 h-8 rounded-full border border-gold-pale"
           style={{
             animation: playing ? "spin 6s linear infinite" : "none",
           }}
         >
           <svg
             viewBox="0 0 24 24"
-            className="w-4 h-4 text-sage-deep"
+            className="w-4 h-4 text-gold-deep"
             fill="currentColor"
             aria-hidden="true"
           >

@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #fefdfb;
-  --paper-soft: #faf7f1;
-  --ink: #3a3733;
-  --ink-soft: #6b6660;
-  --sage: #8fa082;
-  --sage-deep: #6d7f63;
-  --sage-pale: #d8e0d0;
-  --beige: #ece4d4;
-  --silver: #c7c2b6;
+  --paper: #faf8ee;
+  --paper-soft: #f0ecd6;
+  --ink: #38431f;
+  --ink-soft: #6f7a52;
+  --gold: #d9a34e;
+  --gold-deep: #b9822f;
+  --gold-pale: #e8cf9c;
+  --beige: #ece4d0;
+  --silver: #cdd4ab;
+  --olive: #6f7f3a;
+  --forest: #2f4a1e;
 }
 
 @theme inline {
@@ -17,11 +19,13 @@
   --color-paper-soft: var(--paper-soft);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
-  --color-sage: var(--sage);
-  --color-sage-deep: var(--sage-deep);
-  --color-sage-pale: var(--sage-pale);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-pale: var(--gold-pale);
   --color-beige: var(--beige);
   --color-silver: var(--silver);
+  --color-olive: var(--olive);
+  --color-forest: var(--forest);
   --font-display: "Cormorant Garamond", serif;
   --font-script: "Parisienne", cursive;
   --font-utility: "Jost", sans-serif;
@@ -56,7 +60,7 @@ body {
   content: "";
   height: 1px;
   width: 2.5rem;
-  background: var(--silver);
+  background: var(--gold-pale);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,18 +3,21 @@
 import { useState } from "react";
 import CoverScreen from "../components/Coverscreen";
 import FloralOrnament from "../components/FloralOrnament";
+import FloralPhoto from "../components/FloralPhoto";
 import PetalsFall from "../components/PetalsFall";
 import MusicPlayer from "../components/MusicPlayer";
 import Reveal from "../components/Reveal";
 import CountdownTimer from "../components/CountdownTimer";
 import EventCard from "../components/EventCard";
 import RSVPForm from "../components/RSVPForm";
+import GuestbookWall from "../components/GuestbookWall";
 import PhotoGallery from "../components/PhotoGallery";
-import FloralCluster from "@/src/components/FloralCluster";
+import OurStory from "../components/OurStory";
 import { invitation } from "../data/invitation";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [guestbookRefresh, setGuestbookRefresh] = useState(0);
 
   return (
     <>
@@ -29,23 +32,32 @@ export default function Home() {
       >
         {/* HERO / GREETING */}
         <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center overflow-hidden">
-          <FloralCluster
-            variant="corner"
-            className="absolute -bottom-4 -left-4 w-52 sm:w-72 opacity-95"
+          <FloralPhoto
+            variant="bouquet-1"
+            className="absolute -bottom-6 -left-6 w-40 sm:w-56 opacity-95 drop-shadow-sm"
           />
-          <FloralCluster
-            variant="corner"
+          <FloralPhoto
+            variant="bouquet-2"
             flip
-            className="absolute -bottom-4 -right-4 w-52 sm:w-72 opacity-95"
+            className="absolute -bottom-6 -right-6 w-40 sm:w-56 opacity-95 drop-shadow-sm"
           />
-          <FloralOrnament
-            variant="corner"
-            className="absolute top-0 left-0 w-32 sm:w-44 opacity-60"
+          <FloralPhoto
+            variant="sunflower-1"
+            className="absolute -top-4 -left-6 w-28 sm:w-36 opacity-90 -rotate-12"
           />
-          <FloralOrnament
-            variant="corner"
+          <FloralPhoto
+            variant="sunflower-1"
             flip
-            className="absolute top-0 right-0 w-32 sm:w-44 opacity-60 rotate-90"
+            className="absolute -top-4 -right-6 w-28 sm:w-36 opacity-90 rotate-12"
+          />
+          <FloralPhoto
+            variant="sprig-1"
+            className="absolute top-1/3 left-2 w-10 sm:w-14 opacity-70 hidden sm:block"
+          />
+          <FloralPhoto
+            variant="sprig-1"
+            flip
+            className="absolute top-1/3 right-2 w-10 sm:w-14 opacity-70 hidden sm:block"
           />
 
           <Reveal>
@@ -73,23 +85,15 @@ export default function Home() {
                 Mempelai
               </span>
             </div>
-            <FloralCluster variant="band" className="w-full max-w-xs mx-auto opacity-90" />
+            <div className="flex items-center justify-center gap-6 opacity-90">
+              <FloralPhoto variant="bouquet-2" className="w-14 sm:w-16 rotate-[100deg]" />
+              <FloralPhoto variant="mixed-1" className="w-10 sm:w-12 opacity-80" />
+              <FloralPhoto variant="bouquet-2" flip className="w-14 sm:w-16 -rotate-[100deg]" />
+            </div>
           </Reveal>
 
           <div className="grid sm:grid-cols-2 gap-14 mt-12">
             <Reveal delay={0.1}>
-              <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
-                <FloralOrnament variant="sprig" className="w-8" />
-              </div>
-              <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
-                {invitation.groom.name}
-              </h2>
-              <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
-                {invitation.groom.parents}
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.25}>
               <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
                 <FloralOrnament variant="sprig" className="w-8" />
               </div>
@@ -100,12 +104,51 @@ export default function Home() {
                 {invitation.bride.parents}
               </p>
             </Reveal>
+
+            <Reveal delay={0.25}>
+              <div className="w-24 h-24 mx-auto rounded-full border border-gold-pale flex items-center justify-center mb-6">
+                <FloralOrnament variant="sprig" className="w-8" />
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-2">
+                {invitation.groom.name}
+              </h2>
+              <p className="text-sm text-ink-soft leading-relaxed max-w-xs mx-auto">
+                {invitation.groom.parents}
+              </p>
+            </Reveal>
           </div>
         </section>
 
+        {/* OUR STORY */}
+        <section className="relative py-24 px-6 bg-paper-soft/60 overflow-hidden">
+          <FloralPhoto
+            variant="bouquet-3"
+            className="absolute -top-6 -left-6 w-32 sm:w-44 opacity-80"
+          />
+          <FloralPhoto
+            variant="sprig-1"
+            flip
+            className="absolute -bottom-4 -right-2 w-24 sm:w-32 opacity-75"
+          />
+          <OurStory
+            paragraphs={invitation.story.paragraphs}
+            blessing={invitation.story.blessing}
+            tagline={invitation.story.tagline}
+          />
+        </section>
+
         {/* QUOTE */}
-        <section className="relative py-24 px-6 bg-paper-soft/60">
-          <Reveal className="max-w-lg mx-auto text-center">
+        <section className="relative py-24 px-6 overflow-hidden">
+          <FloralPhoto
+            variant="mixed-1"
+            className="absolute top-4 left-2 sm:left-10 w-16 sm:w-24 opacity-70 hidden sm:block"
+          />
+          <FloralPhoto
+            variant="mixed-1"
+            flip
+            className="absolute bottom-4 right-2 sm:right-10 w-16 sm:w-24 opacity-70 hidden sm:block"
+          />
+          <Reveal className="max-w-lg mx-auto text-center relative">
             <FloralOrnament variant="sprig" className="w-8 mx-auto mb-6 opacity-80" />
             <p className="font-[family-name:var(--font-display)] italic text-2xl sm:text-3xl text-ink leading-relaxed">
               &ldquo;{invitation.quote}&rdquo;
@@ -114,7 +157,11 @@ export default function Home() {
         </section>
 
         {/* GALLERY */}
-        <section className="relative py-24 px-6 max-w-3xl mx-auto">
+        <section className="relative py-24 px-6 max-w-3xl mx-auto overflow-hidden">
+          <FloralPhoto
+            variant="sprig-1"
+            className="absolute -top-2 -right-4 w-20 sm:w-28 opacity-60 hidden sm:block"
+          />
           <Reveal className="text-center mb-12">
             <div className="divider-flourish mb-4">
               <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
@@ -137,7 +184,10 @@ export default function Home() {
         {/* EVENTS */}
         <section className="relative py-24 px-6 max-w-4xl mx-auto">
           <Reveal className="text-center mb-14">
-            <FloralCluster variant="band" className="w-full max-w-sm mx-auto opacity-90 mb-2" />
+            <div className="flex items-center justify-center gap-8 opacity-90 mb-2">
+              <FloralPhoto variant="bouquet-1" className="w-16 sm:w-20 rotate-[95deg]" />
+              <FloralPhoto variant="bouquet-1" flip className="w-16 sm:w-20 -rotate-[95deg]" />
+            </div>
             <div className="divider-flourish mb-4">
               <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
                 Acara
@@ -158,7 +208,16 @@ export default function Home() {
         </section>
 
         {/* RSVP */}
-        <section className="relative py-24 px-6 bg-paper-soft/60">
+        <section className="relative py-24 px-6 bg-paper-soft/60 overflow-hidden">
+          <FloralPhoto
+            variant="bouquet-3"
+            flip
+            className="absolute -top-8 -left-8 w-32 sm:w-44 opacity-70"
+          />
+          <FloralPhoto
+            variant="sunflower-1"
+            className="absolute -bottom-6 -right-6 w-28 sm:w-36 opacity-75"
+          />
           <Reveal className="text-center mb-12">
             <div className="divider-flourish mb-4">
               <span className="text-xs tracking-wide-xl uppercase text-ink-soft">
@@ -174,20 +233,22 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <RSVPForm />
+            <RSVPForm onSubmitted={() => setGuestbookRefresh((n) => n + 1)} />
           </Reveal>
+
+          <GuestbookWall refreshKey={guestbookRefresh} />
         </section>
 
         {/* CLOSING */}
         <section className="relative py-24 px-6 text-center overflow-hidden">
-          <FloralCluster
-            variant="corner"
-            className="absolute -bottom-6 -left-6 w-56 sm:w-72 opacity-95"
+          <FloralPhoto
+            variant="bouquet-2"
+            className="absolute -bottom-8 -left-8 w-44 sm:w-60 opacity-95 drop-shadow-sm"
           />
-          <FloralCluster
-            variant="corner"
+          <FloralPhoto
+            variant="bouquet-1"
             flip
-            className="absolute -bottom-6 -right-6 w-56 sm:w-72 opacity-95"
+            className="absolute -bottom-8 -right-8 w-44 sm:w-60 opacity-95 drop-shadow-sm"
           />
           <Reveal className="max-w-md mx-auto">
             <h2 className="font-[family-name:var(--font-display)] text-3xl text-ink mb-4">

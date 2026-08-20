@@ -12,6 +12,14 @@ export const invitation = {
   quote: "Love is the flower you've got to let grow.",
   headerCopy:
     "Together with their families, we invite you to celebrate our wedding day.",
+  story: {
+    paragraphs: [
+      "Pertemuan kami dimulai sejak masa sekolah di MAN 2 Kudus. Hanya saling mengenal, mengirim pesan, serta tegur sapa sebagai kakak dan adik kelas. Seiring berjalannya waktu muncul perasaan ingin lebih dekat, tapi kami lebih memilih menahan dan mengucap \u201csee u when i see u\u201d.",
+      "Bulan September 2024 akhirnya kami kembali bertemu. Dengan cerita keseharian yang lebih seru membuat kami ingin jauh lebih mengenal dan saling mengenalkan kepada keluarga. Alhamdulillah pertemuan ini membuat kami dan keluarga saling yakin untuk lanjut di hubungan yang lebih serius.",
+    ],
+    blessing: "Doakan kami agar menjadi keluarga Sakinah, Mawadah wa Rahmah yaa\ud83e\udd70",
+    tagline: "Finally, we can see each other again now and forever",
+  },
   date: "2026-11-29T11:30:00+07:00",
   events: [
     {
@@ -30,12 +38,15 @@ export const invitation = {
     },
   ],
   gallery: [
-    "/gallery/photo-1.jpg",
-    "/gallery/photo-2.jpg",
-    "/gallery/photo-3.jpg",
-    "/gallery/photo-4.jpg",
-    "/gallery/photo-5.jpg",
-    "/gallery/photo-6.jpg",
+    "/gallery/photo1.jpeg",
+    "/gallery/photo2.jpeg",
+    "/gallery/photo3.jpeg",
+    "/gallery/photo4.jpeg",
+    "/gallery/photo5.jpeg",
+    "/gallery/photo6.jpeg",
+    "/gallery/photo7.jpeg",
+    "/gallery/photo8.jpeg",
+    "/gallery/photo9.jpeg",
   ],
   closing: {
     title: "Terima Kasih",
