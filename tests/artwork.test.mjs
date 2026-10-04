@@ -27,3 +27,9 @@ test("Homepage references original characters, not generated substitutes", async
   assert.ok(hero.includes('/artwork/salma.png'));
   assert.ok(!hero.includes("wedding-keepsake-3d"));
 });
+
+test("Opening page uses both original character files", async () => {
+  const cover = await readFile(new URL("../src/components/FrontPage.tsx", import.meta.url), "utf8");
+  assert.ok(cover.includes('/artwork/adam.png'));
+  assert.ok(cover.includes('/artwork/salma.png'));
+});

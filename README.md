@@ -26,6 +26,11 @@ locally; builds do not download fonts. Copyright notices are in
 
 ## Content and imagery
 
+- Opening page: `src/components/FrontPage.tsx`. The cover uses the original
+  portraits and floral assets. Its button parts two paper panels, reveals the
+  main invitation, restores scrolling, and moves keyboard focus to the title.
+  The background stays inert until the transition finishes; reduced-motion
+  users get an immediate reveal. Short screens can scroll within the cover.
 - Wedding names, dates, addresses, story, and gallery: `src/data/invitation.ts`.
 - Theme and responsive layout: `src/app/globals.css`.
 - Homepage motion: `src/components/HeroArtwork.tsx`. It uses the exact supplied
@@ -87,6 +92,10 @@ after testing. Never deploy the preview service or its environment values.
 - `npm test` checks the original character SHA-256 hashes and hero references.
 - Check mobile at 320px and 390px, plus desktop: no horizontal overflow,
   complete faces in the hero, readable form controls, and unclipped flowers.
+- Cover: activate Buka undangan with keyboard or touch, ensure the cover is
+  removed, focus reaches the main title, and page scrolling is restored.
+- Countdown: four legible arch-shaped units and a visible calendar-download
+  link on mobile and desktop.
 - Gallery: open photo 2, navigate with arrows, close with Escape, and confirm
   keyboard focus returns to its thumbnail.
 - RSVP: required fields, attendance choices, guest-count bounds, successful
