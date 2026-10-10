@@ -10,7 +10,18 @@ export const metadata: Metadata = {
   title: "Adam & Salma — A Lifetime of Us",
   description: "Dengan penuh cinta, kami mengundang Anda merayakan pernikahan Adam dan Salma. 29 November 2026, Kudus, Jawa Tengah.",
   openGraph: { title: "The Wedding of Adam & Salma", description: "29 November 2026 · Kudus, Jawa Tengah. A little story, a lifetime of us.", locale: "id_ID", type: "website" },
+  icons: {
+    icon: [
+      {
+        url: "/gallery/logo.png",
+        type: "image/png",
+        sizes: "any",
+      },
+    ],
+    apple: "/gallery/logo.png",
+  },
 };
+
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="id" className={`${display.variable} ${utility.variable} ${script.variable}`}><body>{children}</body></html>;

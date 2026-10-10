@@ -32,6 +32,11 @@ locally; builds do not download fonts. Copyright notices are in
   The background stays inert until the transition finishes; reduced-motion
   users get an immediate reveal. Short screens can scroll within the cover.
 - Wedding names, dates, addresses, story, and gallery: `src/data/invitation.ts`.
+- Wedding gift accounts: `invitation.bankAccounts` in the same data file.
+  Add only the bank name, account holder, and exact account number supplied by
+  the couple. Keep account numbers as strings to preserve leading zeros.
+  `WeddingGift.tsx` stays hidden while the list is empty and provides a
+  copy-number button once complete account details are present.
 - Theme and responsive layout: `src/app/globals.css`.
 - Homepage motion: `src/components/HeroArtwork.tsx`. It uses the exact supplied
   `public/artwork/adam.png` and `salma.png`. No AI-generated portrait replacements

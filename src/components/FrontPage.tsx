@@ -72,9 +72,16 @@ export default function FrontPage({ opening, onOpen, onEntered }: Props) {
             <HeartIcon />
             <p>Untuk keluarga & sahabat terkasih,<br /><span>sebuah undangan, dari hati kami.</span></p>
           </div>
-          <button type="button" className="button button-primary front-open" disabled={opening} onClick={onOpen} aria-controls="invitation-content">
-            <span>{opening ? "Membuka undangan…" : "Buka undangan"}</span><ArrowIcon />
-          </button>
+          <button
+  type="button"
+  className="button button-primary front-open"
+  disabled={opening}
+  onClick={onOpen}
+  aria-controls="invitation-content"
+  suppressHydrationWarning
+>
+  <span>{opening ? "Membuka undangan…" : "Buka undangan"}</span><ArrowIcon />
+</button>
           <p className="front-hint">A little story, a lifetime of us.</p>
           <noscript><p>Aktifkan JavaScript untuk membuka undangan interaktif ini.</p></noscript>
         </motion.div>
