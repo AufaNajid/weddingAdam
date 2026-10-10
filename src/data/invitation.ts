@@ -1,5 +1,13 @@
+export type BankAccount = {
+  bankName: string;
+  accountHolder: string;
+  accountNumber: string;
+};
+
 export const invitation = {
   coupleShort: "Adam & Salma",
+  // Remains hidden until the couple provides their exact account details.
+  bankAccounts: [] as BankAccount[],
   dateDisplay: "29 . 11 . 2026",
   groom: {
     name: "Adam Januar Aldiandie, S.I.Kom.",

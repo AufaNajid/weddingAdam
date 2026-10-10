@@ -17,9 +17,29 @@ import OurStory from "../components/OurStory";
 import { ArrowIcon, HeartIcon, LeafIcon } from "../components/Icons";
 import { invitation } from "../data/invitation";
 
+/* ====== DATA REKENING BCA — ganti dengan data asli ====== */
+const bca = {
+  number: "0310443859",
+  holder: "Adam Januar Aldiandie",
+  logo: "/gallery/bca.png", // opsional: pakai logo resmi di public/bank/bca.png
+};
+
+/** Logo BCA versi sederhana (fallback). */
+function BcaLogo() {
+  return (
+    <svg viewBox="0 0 120 40" width="96" height="32" role="img" aria-label="Logo BCA" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="20" r="14" fill="#0060AF" />
+      <path d="M9 24c4-9 10-13 20-12-7 1-12 5-15 12z" fill="#fff" opacity=".9" />
+      <path d="M12 28c6-5 12-6 18-4-6 0-11 1-18 4z" fill="#fff" opacity=".7" />
+      <text x="40" y="29" fontFamily="Arial, Helvetica, sans-serif" fontWeight="800" fontSize="26" fill="#0060AF" letterSpacing="1">BCA</text>
+    </svg>
+  );
+}
+
 export default function Home() {
   const [stage, setStage] = useState<"closed" | "opening" | "open">("closed");
   const [guestbookRefresh, setGuestbookRefresh] = useState(0);
+  const [copied, setCopied] = useState(false);
   const heroTitle = useRef<HTMLHeadingElement>(null);
   const entered = stage === "open";
 
@@ -40,6 +60,22 @@ export default function Home() {
     setStage("opening");
   }
 
+  async function copyAccount() {
+    const value = bca.number.replace(/\s/g, "");
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const el = document.createElement("textarea");
+      el.value = value;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
   return (
     <MotionConfig reducedMotion="user">
       {stage !== "open" && <FrontPage opening={stage === "opening"} onOpen={openInvitation} onEntered={() => setStage("open")} />}
@@ -51,6 +87,7 @@ export default function Home() {
           <a href="#kisah">Kisah kami</a>
           <a href="#galeri">Galeri</a>
           <a href="#acara">Acara</a>
+          <a href="#hadiah">Hadiah</a>
         </nav>
         <a className="header-rsvp" href="#rsvp">RSVP <ArrowIcon /></a>
       </header>
@@ -147,10 +184,49 @@ export default function Home() {
 
         <section id="rsvp" className="section-shell section-space rsvp-section" aria-labelledby="rsvp-title">
           <div className="rsvp-layout">
-            <Reveal className="rsvp-copy"><p className="eyebrow">SAVE A SEAT, LEAVE SOME LOVE</p><h2 id="rsvp-title">Will you<br /> be <em>there?</em></h2><p>Hari kami akan lebih berarti dengan kehadiran Anda. Mohon konfirmasi sebelum <strong>7 November 2026.</strong></p><div className="rsvp-note"><HeartIcon /><span className="handwritten">We saved you a little place<br />in our favorite day.</span></div></Reveal>
+            <Reveal className="rsvp-copy">
+              <div className="rsvp-floral-accent"><FloralPhoto variant="bouquet-2" /></div>
+              <p className="eyebrow">SAVE A SEAT, LEAVE SOME LOVE</p>
+              <h2 id="rsvp-title">Your presence,<br /><em>our happiness.</em></h2>
+              <p>Kami tak sabar merayakan hari bahagia ini bersama Anda. Sampaikan kehadiran Anda melalui undangan kecil ini.</p>
+              <div className="rsvp-deadline">
+                <span className="rsvp-date-tile" aria-hidden="true"><strong>07</strong><span>NOV</span></span>
+                <div><span className="eyebrow">BATAS KONFIRMASI</span><p>7 November 2026</p><span>Agar kami dapat menyambut Anda dengan hangat.</span></div>
+              </div>
+              <p className="rsvp-note handwritten">A place at our table,<br />a place in our hearts.</p>
+            </Reveal>
             <Reveal><RSVPForm onSubmitted={() => setGuestbookRefresh((n) => n + 1)} /></Reveal>
           </div>
           <GuestbookWall key={guestbookRefresh} />
+        </section>
+
+        <section id="hadiah" className="section-shell section-space gift-section" aria-labelledby="gift-title">
+          <Reveal className="section-heading centered">
+            <p className="eyebrow">WEDDING GIFT</p>
+            <h2 id="gift-title">Tanda <em>kasih.</em></h2>
+            <p>Doa restu Anda sudah cukup bagi kami. Namun jika ingin memberi tanda kasih, Anda dapat mengirimkannya melalui rekening berikut.</p>
+          </Reveal>
+          <div className="gift-grid">
+            <Reveal>
+              <div className="gift-card">
+                <div className="gift-logo">
+                 <Image
+  src={bca.logo}
+  alt="Logo BCA"
+  width={160}
+  height={60}
+  style={{ width: 160, height: "auto" }}
+/>
+                </div>
+                <p className="gift-number" aria-label="Nomor rekening BCA">{bca.number}</p>
+                <p className="gift-holder">a.n. {bca.holder}</p>
+                <button type="button" className="button button-primary gift-copy" onClick={copyAccount}>
+                  {copied ? "Tersalin ✓" : "Salin nomor rekening"}
+                </button>
+                <span className="sr-only" aria-live="polite">{copied ? "Nomor rekening tersalin" : ""}</span>
+              </div>
+            </Reveal>
+          </div>
         </section>
 
         <footer className="closing-section">
@@ -162,7 +238,7 @@ export default function Home() {
           <div className="footer-bottom"><a className="monogram" href="#home" aria-label="Kembali ke atas">A<span>&</span>S</a><span>29.11.2026 · KUDUS, JAWA TENGAH</span><a href="#home">Kembali ke atas ↑</a></div>
         </footer>
       </main>
-      <MusicPlayer src="/music/wedding-song.mp3" autoPlayTrigger={stage !== "closed"} />
+      <MusicPlayer src="/music/Risk-it-all.mp3" autoPlayTrigger={stage !== "closed"} />
       </div>
     </MotionConfig>
   );
