@@ -51,6 +51,24 @@ locally; builds do not download fonts. Copyright notices are in
 
 ## Personalized guest links
 
+### Easy WhatsApp sharing
+
+Open `/kirim` on your website. Type the recipient's name with normal spaces,
+then check the published website address. Choose **Salin tautan**, **Salin
+pesan**, or **Buka WhatsApp**. The latter opens a prefilled draft: you choose
+the contact and press Send yourself. Paragraph breaks and special characters
+are encoded automatically using WhatsApp's
+[official click-to-chat format](https://faq.whatsapp.com/5913398998672934).
+
+The generator writes spaces as `+`, for example `?to=Budi+Santoso`; the
+invitation still displays normal spaces. It blocks local-only addresses such
+as `localhost` and `127.0.0.1` from being shared. When previewing locally,
+enter your real deployed website address first. No guest list is stored.
+The generator is a separate, noindex page, not linked from the guest invitation.
+It is not an authenticated admin area and contains no private guest records.
+
+### Manual links
+
 Add `?to=` followed by the URL-encoded recipient name to your published URL:
 
 ```text
