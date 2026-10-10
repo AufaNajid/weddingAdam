@@ -248,7 +248,7 @@ export default function Home() {
           <div className="footer-bottom"><a className="monogram" href="#home" aria-label="Kembali ke atas">A<span>&</span>S</a><span>29.11.2026 · KUDUS, JAWA TENGAH</span><a href="#home">Kembali ke atas ↑</a></div>
         </footer>
       </main>
-      <MusicPlayer src="/music/Risk-it-all.mp3" autoPlayTrigger={stage !== "closed"} />
+      <MusicPlayer src="/music/awalkisah.mp3" autoPlayTrigger={stage !== "closed"} />
       </div>
     </MotionConfig>
   );
