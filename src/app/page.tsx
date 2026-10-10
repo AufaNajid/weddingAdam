@@ -134,7 +134,12 @@ export default function Home() {
           <div className="couple-layout">
             <Reveal className="couple-person groom-person">
               <p className="eyebrow">THE GROOM</p><h3>Adam</h3>
-              <p className="full-name">{invitation.groom.name}</p><p className="parents">{invitation.groom.parents}</p>
+              <p className="full-name">{invitation.groom.name}</p>
+              <p className="parents">
+                <span>{invitation.groom.parents.introduction}</span>{" "}
+                <span>{invitation.groom.parents.father}</span>{" "}
+                <span>&amp; {invitation.groom.parents.mother}</span>
+              </p>
             </Reveal>
             <Reveal className="couple-photo" delay={0.1}>
               <Image src="/gallery/photo7.jpeg" alt="Adam dan Salma tersenyum bersama" fill sizes="(max-width: 700px) 70vw, 320px" />
@@ -142,7 +147,12 @@ export default function Home() {
             </Reveal>
             <Reveal className="couple-person bride-person" delay={0.2}>
               <p className="eyebrow">THE BRIDE</p><h3>Salma</h3>
-              <p className="full-name">{invitation.bride.name}</p><p className="parents">{invitation.bride.parents}</p>
+              <p className="full-name">{invitation.bride.name}</p>
+              <p className="parents">
+                <span>{invitation.bride.parents.introduction}</span>{" "}
+                <span>{invitation.bride.parents.father}</span>{" "}
+                <span>&amp; {invitation.bride.parents.mother}</span>
+              </p>
             </Reveal>
           </div>
         </section>

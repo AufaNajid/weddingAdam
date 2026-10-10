@@ -1,7 +1,9 @@
 "use client";
 
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, Suspense, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase, type Attendance, GUESTBOOK_TABLE } from "../lib/supabase";
+import { getRecipientName, MAX_RECIPIENT_NAME_LENGTH } from "../lib/recipient";
 import { ArrowIcon, HeartIcon } from "./Icons";
 
 const OPTIONS: { value: Attendance; hint: string }[] = [
@@ -10,8 +12,25 @@ const OPTIONS: { value: Attendance; hint: string }[] = [
   { value: "Masih Ragu", hint: "Belum pasti" },
 ];
 
-export default function RSVPForm({ onSubmitted }: { onSubmitted?: () => void }) {
-  const [name, setName] = useState("");
+type Props = { onSubmitted?: () => void };
+
+export default function RSVPForm(props: Props) {
+  return (
+    <Suspense fallback={<RSVPFields {...props} />}>
+      <PersonalizedRSVPForm {...props} />
+    </Suspense>
+  );
+}
+
+function PersonalizedRSVPForm(props: Props) {
+  const searchParams = useSearchParams();
+  return <RSVPFields {...props} recipientName={getRecipientName(searchParams)} />;
+}
+
+function RSVPFields({ onSubmitted, recipientName = "" }: Props & { recipientName?: string }) {
+  // Once edited (even cleared), never overwrite the guest's input on navigation.
+  const [editedName, setName] = useState<string | null>(null);
+  const name = editedName ?? recipientName;
   const [attendance, setAttendance] = useState<Attendance>("Hadir");
   const [guests, setGuests] = useState(1);
   const [message, setMessage] = useState("");
@@ -85,7 +104,7 @@ export default function RSVPForm({ onSubmitted }: { onSubmitted?: () => void }) 
 
       <div className="form-field">
         <label className="form-label" htmlFor="guest-name"><span className="field-number" aria-hidden="true">01</span> Nama lengkap <span className="field-required" aria-hidden="true">*</span></label>
-        <input ref={nameInput} id="guest-name" name="name" className="form-input" autoComplete="name" placeholder="Nama Anda sesuai undangan" value={name} onChange={(e) => { setName(e.target.value); setNameError(""); }} required minLength={2} maxLength={100} disabled={submitting} aria-invalid={nameError ? true : undefined} aria-describedby={nameError ? "guest-name-error" : undefined} />
+        <input ref={nameInput} id="guest-name" name="name" className="form-input" autoComplete="name" placeholder="Nama Anda sesuai undangan" value={name} onChange={(e) => { setName(e.target.value); setNameError(""); }} required minLength={2} maxLength={MAX_RECIPIENT_NAME_LENGTH} disabled={submitting} aria-invalid={nameError ? true : undefined} aria-describedby={nameError ? "guest-name-error" : undefined} />
         {nameError && <p id="guest-name-error" className="field-error" role="alert">{nameError}</p>}
       </div>
 

@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import FloralPhoto from "./FloralPhoto";
 import { ArrowIcon, HeartIcon } from "./Icons";
 import { invitation } from "../data/invitation";
+import RecipientGreeting from "./RecipientGreeting";
 
 type Props = {
   opening: boolean;
@@ -70,7 +71,7 @@ export default function FrontPage({ opening, onOpen, onEntered }: Props) {
           <p className="front-date">{invitation.dateDisplay}<span aria-hidden="true"> · </span>KUDUS</p>
           <div className="front-dedication">
             <HeartIcon />
-            <p>Untuk keluarga & sahabat terkasih,<br /><span>sebuah undangan, dari hati kami.</span></p>
+            <RecipientGreeting />
           </div>
           <button
   type="button"

@@ -131,6 +131,7 @@ svg { flex-shrink: 0; }
 .couple-person h3 { font-family: var(--font-script); color: var(--gold-deep); font-size: 62px; margin: 14px 0; }
 .full-name { font-size: 15px; line-height: 1.6; }
 .parents { font-size: 13px; color: var(--ink-soft); line-height: 1.8; max-width: 245px; margin: 16px auto 0; }
+.parents > span { display: block; text-wrap: balance; }
 .couple-photo { position: relative; aspect-ratio: 3 / 4; border-radius: 180px 180px 4px 4px; }
 .couple-photo img { object-fit: cover; border-radius: inherit; }
 .couple-photo::before { content: ""; position: absolute; inset: -12px 12px 12px -12px; border: 1px solid #cdd1bc; border-radius: inherit; z-index: -1; }
@@ -366,6 +367,7 @@ textarea.form-input { resize: vertical; min-height: 105px; }
 .front-dedication { margin: 23px auto 20px; color: var(--ink-soft); font-size: 12px; line-height: 1.75; }
 .front-dedication svg { width: 20px; height: 20px; margin: 0 auto 10px; color: var(--gold-deep); }
 .front-dedication p span { font-family: var(--font-display); font-size: 19px; font-style: italic; }
+.front-recipient { display: block; max-width: 420px; margin: 5px auto 7px; color: var(--ink); font-family: var(--font-display); font-size: clamp(24px, 5vw, 32px); font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; text-wrap: balance; }
 .front-open { min-width: 228px; gap: 30px; border-radius: 2px; box-shadow: 0 7px 18px #91632618; }
 .front-open:disabled { cursor: wait; }
 .front-hint { font-family: var(--font-display); font-style: italic; font-size: 16px; color: var(--ink-soft); margin-top: 17px; }

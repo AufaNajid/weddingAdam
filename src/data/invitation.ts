@@ -11,11 +11,19 @@ export const invitation = {
   dateDisplay: "29 . 11 . 2026",
   groom: {
     name: "Adam Januar Aldiandie, S.I.Kom.",
-    parents: "Putra dari Bapak H. Mu'allif & Ibu Hj. Adri Trisan",
+    parents: {
+      introduction: "Putra dari",
+      father: "Bapak H. Mu'allif",
+      mother: "Ibu Hj. Adri Trisan",
+    },
   },
   bride: {
     name: "Salma Dalila Taufiqoh, S.E., M.M.",
-    parents: "Putri dari Bapak H. Teguh Santoso, S.E. & Ibu Hj. Netty Nurhayati",
+    parents: {
+      introduction: "Putri dari",
+      father: "Bapak H. Teguh Santoso, S.E.",
+      mother: "Ibu Hj. Netty Nurhayati",
+    },
   },
   quote: "Love is the flower you've got to let grow.",
   headerCopy:

@@ -49,6 +49,30 @@ locally; builds do not download fonts. Copyright notices are in
 - Music starts only through a guest's interaction and can be paused.
 - Update `public/adam-salma-wedding.ics` when changing the reception date/time.
 
+## Personalized guest links
+
+Add `?to=` followed by the URL-encoded recipient name to your published URL:
+
+```text
+https://your-domain.com/?to=Budi%20Santoso
+https://your-domain.com/?to=Budi%20%26%20Keluarga
+```
+
+The opening page displays “Kepada Yth.” and the recipient's name. The RSVP
+name is prefilled but remains editable; navigating between sections does not
+overwrite edits. Without `to`, or with a blank name, the general greeting and
+empty RSVP field remain. Names are normalized and limited to 100 characters.
+
+Use `%20` (or `+`) for spaces and `%26` for an ampersand. Put the query before
+any section hash: `/?to=Budi%20Santoso#rsvp`. Share a different link with each
+guest through WhatsApp or another messaging app. Use your deployed domain,
+not `127.0.0.1` or `localhost`, for recipients on other devices.
+
+This personalizes the invitation, not access control: the name is visible in
+the URL, anyone can edit or forward it, and no RSVP is sent until the guest
+submits the form. Guest names are not saved to localStorage or cookies; they
+remain visible in the link and may appear in browser history or server logs.
+
 ## Connect RSVP and guestbook
 
 1. Use an active Supabase project.
